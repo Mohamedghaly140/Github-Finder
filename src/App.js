@@ -23,6 +23,7 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  // Search Github Users
   searchUsersHandler = text => {
     this.setState({ loading: true });
     axios
@@ -36,12 +37,15 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  // Clear Users from State
+  clearUsers = () => this.setState({ users: [], loading: false });
+
   render() {
     return (
       <div className="App">
         <Navbar />
         <div className="container">
-          <Search searchUsers={this.searchUsersHandler} />
+          <Search searchUsers={this.searchUsersHandler} clearUsers={this.clearUsers} />
           <Users loading={this.state.loading} users={this.state.users} />
         </div>
       </div>

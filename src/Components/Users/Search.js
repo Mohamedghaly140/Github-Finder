@@ -8,6 +8,7 @@ class Search extends Component {
 
   static propTypes = {
     searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
   };
 
   onChangeHandler = event => {
@@ -37,6 +38,12 @@ class Search extends Component {
             className="btn btn-dark btn-block"
           />
         </form>
+        <button
+          className="btn btn-light btn-block"
+          onClick={this.props.clearUsers}
+        >
+          Clear
+        </button>
       </div>
     );
   }
