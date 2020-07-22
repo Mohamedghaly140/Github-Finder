@@ -41,6 +41,7 @@ class Search extends Component {
         <button
           className="btn btn-light btn-block"
           onClick={this.props.clearUsers}
+          disabled={this.props.showClear}
         >
           Clear
         </button>
