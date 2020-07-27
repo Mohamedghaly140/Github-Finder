@@ -10,6 +10,7 @@ class Search extends Component {
     searchUsers: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
     showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
   };
 
   onChangeHandler = event => {
@@ -18,6 +19,9 @@ class Search extends Component {
 
   onSubmitHandler = event => {
     event.preventDefault();
+    if (this.state.text === '') {
+      this.props.setAlert('Please Enter Somthing', 'light');
+    }
     this.props.searchUsers(this.state.text);
     this.setState({ text: '' });
   };
@@ -42,10 +46,7 @@ class Search extends Component {
           />
         </form>
         {showClear && (
-          <button
-            className="btn btn-light btn-block"
-            onClick={clearUsers}
-          >
+          <button className="btn btn-light btn-block" onClick={clearUsers}>
             Clear
           </button>
         )}
