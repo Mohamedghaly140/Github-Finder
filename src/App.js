@@ -4,6 +4,7 @@ import axios from 'axios';
 import Navbar from './Components/Layout/Navbar';
 import Alert from './Components/Layout/Alert';
 import Users from './Components/Users/Users';
+import User from './Components/Users/User';
 import Search from './Components/Users/Search';
 import About from './Components/Pages/About';
 import './App.css';
@@ -92,7 +93,18 @@ class App extends Component {
                 </Fragment>
               )}
             />
-            <Route path='/About' component={About} />
+            <Route path="/about" component={About} />
+            <Route
+              path="/user/:login"
+              render={props => (
+                <User
+                  {...props}
+                  getUser={this.getUser}
+                  user={this.state.user}
+                  loading={this.state.loading}
+                />
+              )}
+            />
           </div>
         </div>
       </Router>
