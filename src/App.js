@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Components/Layout/Navbar';
 import Alert from './Components/Layout/Alert';
 import Users from './Components/Users/Users';
 import Search from './Components/Users/Search';
+import About from './Components/Pages/About';
 import './App.css';
 
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null,
   };
@@ -39,32 +42,60 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  // Get a single Github User
+  getUser = username => {
+    this.setState({ loading: true });
+    axios
+      .get(
+        `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ECRET}`
+      )
+      .then(response => {
+        // console.log(response.data);
+        this.setState({ user: response.data, loading: false });
+      })
+      .catch(err => console.log(err));
+  };
+
   // Clear Users from State
   clearUsers = () => this.setState({ users: [], loading: false });
 
   // Set Alert
   setAlert = (msg, type) => {
-    this.setState({ alert: { msg, type } });
+    this.setState({ alert: { msg, type }, loading: false });
     setTimeout(() => {
       this.setState({ alert: null });
-    }, 2500);
+    }, 3000);
   };
 
   render() {
     return (
-      <div className="App">
-        <Navbar />
-        <div className="container">
-          <Alert alert={this.state.alert} />
-          <Search
-            searchUsers={this.searchUsersHandler}
-            clearUsers={this.clearUsers}
-            showClear={this.state.users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          />
-          <Users loading={this.state.loading} users={this.state.users} />
+      <Router>
+        <div className="App">
+          <Navbar />
+          <div className="container">
+            <Alert alert={this.state.alert} />
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <Fragment>
+                  <Search
+                    searchUsers={this.searchUsersHandler}
+                    clearUsers={this.clearUsers}
+                    showClear={this.state.users.length > 0 ? true : false}
+                    setAlert={this.setAlert}
+                  />
+                  <Users
+                    loading={this.state.loading}
+                    users={this.state.users}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route path='/About' component={About} />
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
