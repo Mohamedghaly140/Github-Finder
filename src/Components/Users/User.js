@@ -9,7 +9,7 @@ const User = props => {
   useEffect(() => {
     getUser(match.params.login);
     getUserRepos(match.params.login);
-  }, [getUser, getUserRepos]);
+  }, [getUser, getUserRepos, match.params.login]);
 
   const {
     name,
