@@ -29,22 +29,7 @@ const App = () => {
       })
       .catch(err => console.log(err));
   }, []);
-
-  // Search Github Users
-  const searchUsersHandler = text => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ECRET}`
-      )
-      .then(response => {
-        // console.log(response.data.items);
-        setUsers(response.data.items);
-        setLoading(false);
-      })
-      .catch(err => console.log(err));
-  };
-
+  
   // Get a single Github User
   const getUser = username => {
     setLoading(true);
@@ -103,7 +88,6 @@ const App = () => {
               render={props => (
                 <Fragment>
                   <Search
-                    searchUsers={searchUsersHandler}
                     clearUsers={clearUsers}
                     showClear={users.length > 0 ? true : false}
                     setAlert={showAlert}
