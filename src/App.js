@@ -29,21 +29,6 @@ const App = () => {
       })
       .catch(err => console.log(err));
   }, []);
-  
-  // Get a single Github User
-  const getUser = username => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ECRET}`
-      )
-      .then(response => {
-        // console.log(response.data);
-        setUser(response.data);
-        setLoading(false);
-      })
-      .catch(err => console.log(err));
-  };
 
   // Get user repos
   const getUserRepos = username => {
@@ -58,12 +43,6 @@ const App = () => {
         setLoading(false);
       })
       .catch(err => console.log(err));
-  };
-
-  // Clear Users from State
-  const clearUsers = () => {
-    setUsers([]);
-    setLoading(false);
   };
 
   // Set Alert
@@ -87,12 +66,8 @@ const App = () => {
               path="/"
               render={props => (
                 <Fragment>
-                  <Search
-                    clearUsers={clearUsers}
-                    showClear={users.length > 0 ? true : false}
-                    setAlert={showAlert}
-                  />
-                  <Users loading={loading} users={users} />
+                  <Search setAlert={showAlert} />
+                  <Users />
                 </Fragment>
               )}
             />
@@ -102,9 +77,7 @@ const App = () => {
               render={props => (
                 <User
                   {...props}
-                  getUser={getUser}
                   getUserRepos={getUserRepos}
-                  user={user}
                   repos={repos}
                   loading={loading}
                 />
