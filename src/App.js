@@ -12,8 +12,6 @@ import './App.css';
 
 const App = () => {
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({});
-  const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
 
@@ -29,21 +27,6 @@ const App = () => {
       })
       .catch(err => console.log(err));
   }, []);
-
-  // Get user repos
-  const getUserRepos = username => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ECRET}`
-      )
-      .then(response => {
-        // console.log(response.data);
-        setRepos(response.data);
-        setLoading(false);
-      })
-      .catch(err => console.log(err));
-  };
 
   // Set Alert
   const showAlert = (msg, type) => {
@@ -74,14 +57,7 @@ const App = () => {
             <Route path="/about" component={About} />
             <Route
               path="/user/:login"
-              render={props => (
-                <User
-                  {...props}
-                  getUserRepos={getUserRepos}
-                  repos={repos}
-                  loading={loading}
-                />
-              )}
+              component={User}
             />
           </div>
         </div>
