@@ -3,13 +3,12 @@ import axios from 'axios';
 import GithubContext from './githubContext';
 import GithubReducer from './githubReducer';
 import {
+  GET_USERS,
   GET_USER,
   CLEAR_USERS,
   GET_REPOS,
   SEARCH_USERS,
   SET_LOADING,
-  SET_ALERT,
-  REMOVE_ALERT,
 } from '../types';
 
 const GithubState = props => {
@@ -21,6 +20,19 @@ const GithubState = props => {
   };
 
   const [state, dispatch] = useReducer(GithubReducer, initialState);
+
+  // Get Users
+  const getUsers = () => {
+    setLoading();
+    axios
+      .get(
+        `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ECRET}`
+      )
+      .then(response => {
+        dispatch({ type: GET_USERS, payload: response.data });
+      })
+      .catch(err => console.log(err));
+  };
 
   // Search Users
   const searchUsers = text => {
@@ -35,8 +47,6 @@ const GithubState = props => {
       })
       .catch(err => console.log(err));
   };
-
-  // Get Users
 
   // Get User
   const getUser = username => {
@@ -79,9 +89,10 @@ const GithubState = props => {
         user: state.user,
         repos: state.repos,
         loading: state.loading,
-        searchUsers,
-        clearUsers,
+        getUsers,
         getUser,
+        clearUsers,
+        searchUsers,
         getUserRepos,
       }}
     >
